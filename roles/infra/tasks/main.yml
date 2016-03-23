@@ -1,7 +1,9 @@
 ---
 # tasks file for Infra
-- name: Create Instance (Debian 8 HVM)
+ tasks:
+   - name: Create Instance (Debian 8 HVM)
       ec2: image={{ image }}
+           name: {{ app_name }}
            instance_type={{ instance_type }}
            keypair={{ keypair }}
            instance_tags='{"Name":"{{ inst_name }}","Environment":"{{ serv_env }}","Class":"{{ serv_class}}","Provision":"{{ provisionby }}"}'
