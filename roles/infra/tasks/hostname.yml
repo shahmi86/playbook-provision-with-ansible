@@ -1,6 +1,7 @@
 --- # Change proper hostname according to EC2 Tag Name
   
-  -name: Change with proper hostname according EC2 Tag Name 
   hosts: all	
   gather_facts: yes
+tasks:
+  -name: Change with proper hostname according EC2 Tag Name 
   command: cat {{ inst_name }} > /etc/hostname
