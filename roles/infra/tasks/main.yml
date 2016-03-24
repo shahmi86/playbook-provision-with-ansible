@@ -1,16 +1,20 @@
----
-# tasks file for Infra
- tasks:
-   - name: Create Instance (Debian 8 HVM)
-      ec2: 
-           image={{ image }}
+--- # Create ec2 instance playbook
+-name: Create EC2 Instance
+  tasks:
+    - name: Create Instance (Debian 8 HVM)
+      ec2: image={{ image }}
            instance_type={{ instance_type }}
-           keypair=""
+           keypair={{ keypair }}
            instance_tags='{"Name":"{{ inst_name }}","Environment":"{{ serv_env }}","Class":"{{ serv_class}}","Provision":"{{ provisionby }}"}'
            region={{ region }}
-           group="{{ tower_callback_client_group_id }},{{ tower_client_group_id }}"
-           user_data= "{{ user_data }}"
+           group={{ group }}
            wait=true
-           wait_timeout= 600
-           tags: create_instance
-           register: ec2_info
+      register: ec2_info
+
+    - name: Add instances to host group
+      add_host: hostname={{ item.public_ip }} groupname={{ ec2groupname }}
+      with_items: ec2_info.instances
+
+    - name: Wait for SSH to come up
+      wait_for: host={{ item.public_dns_name }} port=22 delay=60 timeout=320 state=started
+      with_items: ec2_info.instances

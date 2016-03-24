@@ -1,5 +1,5 @@
 ---
-# vars file for myapp_infra
+# vars file for EC2 Provisioning
 user_data: |
           #!/bin/bash
           exec > /tmp/autoscale.log 2>&1
@@ -41,3 +41,14 @@ sec_group_rules:
   from_port: 0
   to_port: 0
   group_name: "{{ app_name }}"
+
+keypair: ""
+instance_type: "t2.nano"
+image: "ami-effa328c"
+group: "sgpuppetmaster"
+region: "ap-southeast-1"
+inst_name: "testingname"
+serv_env: "Development"
+serv_class: "General"
+provisionby: "Ansible"
+ec2groupname: "ec2hosts"
