@@ -1,6 +1,4 @@
 --- # Create ec2 instance playbook
--name: Create EC2 Instance
-  tasks:
     - name: Create Instance (Debian 8 HVM)
       ec2: image={{ image }}
            instance_type={{ instance_type }}
